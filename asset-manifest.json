@@ -1,0 +1,35 @@
+{
+  "files": {
+    "main.css": "/react-portfolio/static/css/main.9e59ff36.chunk.css",
+    "main.js": "/react-portfolio/static/js/main.82e92f60.chunk.js",
+    "main.js.map": "/react-portfolio/static/js/main.82e92f60.chunk.js.map",
+    "runtime-main.js": "/react-portfolio/static/js/runtime-main.a49ad94d.js",
+    "runtime-main.js.map": "/react-portfolio/static/js/runtime-main.a49ad94d.js.map",
+    "static/js/2.f811620c.chunk.js": "/react-portfolio/static/js/2.f811620c.chunk.js",
+    "static/js/2.f811620c.chunk.js.map": "/react-portfolio/static/js/2.f811620c.chunk.js.map",
+    "index.html": "/react-portfolio/index.html",
+    "precache-manifest.9f700d39f82b0605db4ac7f32e2150e2.js": "/react-portfolio/precache-manifest.9f700d39f82b0605db4ac7f32e2150e2.js",
+    "service-worker.js": "/react-portfolio/service-worker.js",
+    "static/css/main.9e59ff36.chunk.css.map": "/react-portfolio/static/css/main.9e59ff36.chunk.css.map",
+    "static/js/2.f811620c.chunk.js.LICENSE.txt": "/react-portfolio/static/js/2.f811620c.chunk.js.LICENSE.txt",
+    "static/media/bank.png": "/react-portfolio/static/media/bank.c5203553.png",
+    "static/media/golden_gate.jpg": "/react-portfolio/static/media/golden_gate.662a121d.jpg",
+    "static/media/grand_canyon.jpg": "/react-portfolio/static/media/grand_canyon.961c05b4.jpg",
+    "static/media/image.jpg": "/react-portfolio/static/media/image.e892b5e0.jpg",
+    "static/media/iv.jpg": "/react-portfolio/static/media/iv.d7ffa592.jpg",
+    "static/media/laguna.jpg": "/react-portfolio/static/media/laguna.a80eab42.jpg",
+    "static/media/lone_tree.jpg": "/react-portfolio/static/media/lone_tree.e43592df.jpg",
+    "static/media/new_york.jpg": "/react-portfolio/static/media/new_york.6b301454.jpg",
+    "static/media/piano.png": "/react-portfolio/static/media/piano.cdf54155.png",
+    "static/media/point_lobos.jpg": "/react-portfolio/static/media/point_lobos.a6835dfb.jpg",
+    "static/media/rcmh.jpg": "/react-portfolio/static/media/rcmh.dbd20c8d.jpg",
+    "static/media/san_diego.jpg": "/react-portfolio/static/media/san_diego.fab0e46d.jpg",
+    "static/media/ucsb.jpg": "/react-portfolio/static/media/ucsb.c2c9889c.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a49ad94d.js",
+    "static/js/2.f811620c.chunk.js",
+    "static/css/main.9e59ff36.chunk.css",
+    "static/js/main.82e92f60.chunk.js"
+  ]
+}
