@@ -1,18 +1,6 @@
 import React, { Component } from 'react';
 
 export class Photo extends Component {
-  addStyling = () => {
-    if(this.props.tab.id === this.props.activeTab) {
-      return {
-        backgroundColor: '#507A77',
-        color: 'white'
-      }
-    } else {
-      return {
-        color: '#111'
-      }
-    }
-  }
   render() {
     return(
       <div className='img-child'>
