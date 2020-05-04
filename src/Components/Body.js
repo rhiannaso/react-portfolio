@@ -3,6 +3,7 @@ import Home from './Home';
 import Images from './Images';
 import Videos from './Videos';
 import Projects from './Projects';
+import Form from './Form';
 
 export class Body extends Component {
   constructor()
@@ -44,8 +45,10 @@ export class Body extends Component {
       return <Images display={this.state.display} scrollToTop={this.scrollToTop}/>
     else if(activeTab === 3)
       return <Videos display={this.state.display} scrollToTop={this.scrollToTop}/>
-    else
+    else if(activeTab === 4)
       return <Projects display={this.state.display} scrollToTop={this.scrollToTop}/>
+    else 
+      return <Form display={this.state.display} scrollToTop={this.scrollToTop}/>
   }
   render() {
     return(

@@ -9,6 +9,10 @@ body {
   font-weight: normal;
 }
 
+.main-body {
+  height: 100%;
+}
+
 .header {
   padding: 10px 0px;
   background-color: #FFF;
@@ -72,6 +76,7 @@ h2 {
 
 .content {
   padding: 0px 20px;
+  height: 100%;
 }
 
 .section {
@@ -192,6 +197,72 @@ h2 {
 .section a {
   color: #507A77;
   font-style: italic;
+}
+
+/* form */
+#form-section {
+  padding: 10px;
+  display: flex;
+  justify-items: center;
+  height: 100%;
+}
+
+#form {
+  width: 50%;
+  height: 67vh;
+  padding: 0px 16px 16px 16px;
+  margin-right: 12px;
+  margin-bottom: 12px;
+  overflow-y: auto;
+  border-radius: 8px;
+}
+
+#responses {
+  width: 50%;
+  height: 67vh;
+  margin-left: 12px;
+  margin-bottom: 12px;
+  overflow-y: auto;
+}
+
+.response {
+  background-color: #BFD6D4;
+  padding: 15px;
+  margin-top: 10px;
+  border: 2px solid #507A77;
+}
+
+#submit {
+  background-color: #507A77;
+  color: #FFF;
+  border: 1px solid #2F4F4D;
+  padding: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+input[type=text] {
+  border: 1px solid #AAA;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 4px 0px 0px 0px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+textarea {
+  border: 1px solid #AAA;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 4px 0px 0px 0px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+h3 {
+  color: #2F4F4D;
+  margin: 0px 0px 8px 0px;
+  padding: 0px;
 }
 
 @media only screen and (max-width: 750px){

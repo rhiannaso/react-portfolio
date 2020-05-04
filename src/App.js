@@ -7,7 +7,7 @@ export class App extends Component {
   constructor() {
     super();
     this.state = {
-      activeTab: 1
+      activeTab: 1,
     }
     this.changeTab = (id) => {
       this.setState({
@@ -33,6 +33,10 @@ export class App extends Component {
       {
         id: 4,
         title: 'Projects',
+      },
+      {
+        id: 5,
+        title: 'Form',
       },
     ]
     return(
