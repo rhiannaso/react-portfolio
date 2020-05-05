@@ -12,8 +12,7 @@ export class Form extends Component {
       visibility: 'private',
       email: '',
       shouldUpdate: false,
-      begin: 1,
-      data: {},
+      data: [],
     }
   }
 
@@ -24,10 +23,20 @@ export class Form extends Component {
     }
     let ref = firebase.database().ref('data');
     ref.on('value', snapshot => {
-      const data = snapshot.val();        
-      this.setState({data: data});
+      let data = snapshot.val();
+        let newData = [];
+        for (let entry in data) {
+          newData.push({
+            id: entry,
+            name: data[entry].name,
+            desc: data[entry].desc,
+            msg: data[entry].msg,
+            visibility: data[entry].visibility,
+            email: data[entry].email,
+          })
+        }
+        this.setState({data: newData});
     })
-    //this.handleData();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
@@ -37,15 +46,20 @@ export class Form extends Component {
       //same code as above to retrieve the data 
       let ref = firebase.database().ref('data');
       ref.on('value', snapshot => {
-        const data = snapshot.val();
-        this.setState({data: data});
+        let data = snapshot.val();
+        let newData = [];
+        for (let entry in data) {
+          newData.push({
+            id: entry,
+            name: data[entry].name,
+            desc: data[entry].desc,
+            msg: data[entry].msg,
+            visibility: data[entry].visibility,
+            email: data[entry].email,
+          })
+        }
+        this.setState({data: newData});
       })
-      this.handleData();
-      //this.setState({shouldUpdate: false});
-    }
-    if(this.state.begin === 1) {
-      this.handleData();
-      this.setState({begin: 0});
     }
   }
 
@@ -59,11 +73,11 @@ export class Form extends Component {
       alert("Missing the following required field: visibility");
     } else {
       let formObj = {
-        0: this.state.name, 
-        1: this.state.desc,
-        2: this.state.msg,
-        3: this.state.visibility,
-        4: this.state.email,
+        name: this.state.name, 
+        desc: this.state.desc,
+        msg: this.state.msg,
+        visibility: this.state.visibility,
+        email: this.state.email,
       };
       firebase.database().ref('data').push().set(formObj);
       this.setState({shouldUpdate: true});
@@ -77,43 +91,6 @@ export class Form extends Component {
     this.setState({[field]: value});
   }
 
-  handleData = () => {
-    let responses = document.getElementById('resp');
-    let outerArr = Object.values(this.state.data).filter(x => x !== '');
-    let counter = 0;
-    console.log(outerArr);
-    let format = outerArr.map(function(val){
-      let outputString = '';
-      let arr = Object.values(val);
-      if(arr[3] !== 'private') {
-        arr = arr.filter(x => (x !== 'public' && x !== ''));
-        outputString = arr.map(function(s){
-          let temp = '';
-          if(counter === 0) {
-            temp += '<h3>From '+JSON.stringify(s).replace(/"/g, '')+':</h3>';
-          } else {
-            temp += JSON.stringify(s).replace(/"/g, '')+'<br/>';
-          }
-          counter++;
-          return temp;
-        })
-      } 
-      let finalOutput = '';
-      for(var i in outputString) {
-        finalOutput += outputString[i];
-      }
-      if(finalOutput !== '') {
-        finalOutput = '<div class=\'response\'>'+finalOutput+'</div>';
-      }
-      counter = 0;
-      return finalOutput;
-    });
-    format = format.filter(x => x !== '');
-    for(var str in format) {
-      responses.insertAdjacentHTML("afterend", format[str]);
-    }
-  }
-
   render() {
     return (
       <div>
@@ -122,28 +99,57 @@ export class Form extends Component {
             <div id='form'>
             <form onSubmit={this.myFormHandler}>
               <h2>Leave Me a Message</h2>
-              <p>Enter your name:&nbsp;
+              <p><b>*</b> Enter your name:&nbsp;
               <input name='name' type='text' minLength='6' maxLength='19' required onChange={this.myChangeHandler} /></p>
-              <p><i>(Optional)</i> Add a description about yourself:<br/>
+              <p>Add a description about yourself:<br/>
               <input name='desc' type='text' size='50' maxLength='99' onChange={this.myChangeHandler}/>
               </p>
-              <p>Leave your message:<br/>
+              <p><b>*</b> Leave your message:<br/>
                 <textarea name='msg' minLength='16' maxLength='499' required onChange={this.myChangeHandler}></textarea>
               </p>
-              <p>Select your message visibility:&nbsp;
+              <p><b>*</b> Would you like your name and message to be viewable by the other guests of this site?<br/>
                 <select id='visibility' name='visibility' required onChange={this.myChangeHandler}>
-                  <option value='private'>Visible to Site Owner Only</option>
-                  <option value='public'>Visible to Anyone</option>
+                  <option value='private'>No</option>
+                  <option value='public'>Yes</option>
                 </select>
               </p>
-              <p><i>(Optional)</i> Your email:&nbsp;
+              <p>Your email:
               <input name='email' type='text' size='30' onChange={this.myChangeHandler}/>
               </p>
-              <input type='submit' id='submit' name='submit' value='Submit Your Message'></input>
+              <div>
+                <input type='submit' id='submit' name='submit' value='Submit Your Message'></input>
+                <span className='note'><b>*</b>: indicates a required field</span>
+              </div>
             </form>
             </div>
             <div id='responses'>
               <h2 id='resp'>Messages</h2>
+              {this.state.data.map((entry) => {
+                if(entry.visibility !== 'private') {
+                  if(entry.desc !== '') {
+                    return (
+                      <div className='response' id={entry.id}>
+                        <div>
+                          <span className='name'>{entry.name}</span>
+                          <span className='email'>{entry.email}</span>
+                        </div>
+                        <i>{entry.desc}</i><br/>
+                        <span className='message'>{entry.msg}</span><br/>
+                      </div>
+                    )
+                  } else {
+                    return (
+                      <div className='response' id={entry.id}>
+                        <div>
+                          <span className='name'>{entry.name}</span>
+                          <span className='email'>{entry.email}</span>
+                        </div>
+                        <span className='message'>{entry.msg}</span><br/>
+                      </div>
+                    )
+                  }
+                }
+              })}
             </div>
           </div>
         </div>

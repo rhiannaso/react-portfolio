@@ -230,6 +230,7 @@ h2 {
   padding: 15px;
   margin-top: 10px;
   border: 2px solid #507A77;
+  line-height: 25px;
 }
 
 #submit {
@@ -259,10 +260,36 @@ textarea {
   box-sizing: border-box;
 }
 
-h3 {
+select {
+  width: 100%;
+}
+
+b {
+  color: #B00000;
+  font-weight: normal;
+}
+
+.note {
+  float: right;
+  font-size: 14px;
+}
+
+.name {
   color: #2F4F4D;
-  margin: 0px 0px 8px 0px;
-  padding: 0px;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 8px 8px 0px 0px;
+  line-height: 25px;
+}
+
+.message {
+  margin: 16px 0px 0px 8px;
+}
+
+.email {
+  float: right;
+  font-size: 14px;
+  letter-spacing: 1.5px;
 }
 
 @media only screen and (max-width: 750px){
