@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import config from '../config.js';
+import {pulse} from '../../node_modules/animate.css'
 const firebase = require('firebase')
 
 export class Form extends Component {
@@ -105,7 +106,7 @@ export class Form extends Component {
       <div>
         <div className='content'>
           <div id='form-section'>
-            <div id='form'>
+            <div className='form animated fadeInLeft'>
             <form onSubmit={this.myFormHandler}>
               <h2>Leave Me a Message</h2>
               <p><b>*</b> Enter your name:&nbsp;
@@ -131,13 +132,13 @@ export class Form extends Component {
               </div>
             </form>
             </div>
-            <div id='responses'>
+            <div className='responses animated fadeInRight'>
               <h2 id='resp'>Messages</h2>
               {this.state.data.map((entry) => {
                 if(entry.visibility !== 'private') {
                   if(entry.desc !== '') {
                     return (
-                      <div className='response' id={entry.id}>
+                      <div className='response animated pulse' id={entry.id}>
                         <div>
                           <span className='name'>{entry.name}</span>
                           <span className='date'>{entry.date}</span>
@@ -148,7 +149,7 @@ export class Form extends Component {
                     )
                   } else {
                     return (
-                      <div className='response' id={entry.id}>
+                      <div className='response animated pulse' id={entry.id}>
                         <div>
                           <span className='name'>{entry.name}</span>
                           <span className='date'>{entry.date}</span>

@@ -207,7 +207,7 @@ h2 {
   height: 100%;
 }
 
-#form {
+.form {
   width: 50%;
   height: 67vh;
   padding: 0px 16px 16px 16px;
@@ -217,7 +217,7 @@ h2 {
   border-radius: 8px;
 }
 
-#responses {
+.responses {
   width: 50%;
   height: 67vh;
   margin-left: 12px;
