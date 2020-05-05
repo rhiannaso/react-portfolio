@@ -25,7 +25,10 @@ export class Form extends Component {
     ref.on('value', snapshot => {
       let data = snapshot.val();
         let newData = [];
+        let months = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."];
         for (let entry in data) {
+          let d = new Date(data[entry].date);
+          let date = months[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()+" ("+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+")";
           newData.push({
             id: entry,
             name: data[entry].name,
@@ -33,6 +36,7 @@ export class Form extends Component {
             msg: data[entry].msg,
             visibility: data[entry].visibility,
             email: data[entry].email,
+            date: date,
           })
         }
         this.setState({data: newData});
@@ -48,7 +52,10 @@ export class Form extends Component {
       ref.on('value', snapshot => {
         let data = snapshot.val();
         let newData = [];
+        let months = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."];
         for (let entry in data) {
+          let d = new Date(data[entry].date);
+          let date = months[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()+" ("+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+")";
           newData.push({
             id: entry,
             name: data[entry].name,
@@ -56,6 +63,7 @@ export class Form extends Component {
             msg: data[entry].msg,
             visibility: data[entry].visibility,
             email: data[entry].email,
+            date: date,
           })
         }
         this.setState({data: newData});
@@ -78,6 +86,7 @@ export class Form extends Component {
         msg: this.state.msg,
         visibility: this.state.visibility,
         email: this.state.email,
+        date: firebase.database.ServerValue.TIMESTAMP,
       };
       firebase.database().ref('data').push().set(formObj);
       this.setState({shouldUpdate: true});
@@ -131,7 +140,7 @@ export class Form extends Component {
                       <div className='response' id={entry.id}>
                         <div>
                           <span className='name'>{entry.name}</span>
-                          <span className='email'>{entry.email}</span>
+                          <span className='date'>{entry.date}</span>
                         </div>
                         <i>{entry.desc}</i><br/>
                         <span className='message'>{entry.msg}</span><br/>
@@ -142,7 +151,7 @@ export class Form extends Component {
                       <div className='response' id={entry.id}>
                         <div>
                           <span className='name'>{entry.name}</span>
-                          <span className='email'>{entry.email}</span>
+                          <span className='date'>{entry.date}</span>
                         </div>
                         <span className='message'>{entry.msg}</span><br/>
                       </div>
