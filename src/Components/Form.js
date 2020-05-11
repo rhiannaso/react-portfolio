@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import config from '../config.js';
-import {pulse} from '../../node_modules/animate.css'
 const firebase = require('firebase')
 
 export class Form extends Component {
