@@ -5,12 +5,6 @@ import config from '../config.js';
 const firebase = require('firebase');
 
 /*
-  - For delete: 
-    - figure out how to refresh page to show changes after lightbox closes (deletion)
-
-  2. Search bar for movies
-    - pull from movies table where title matches (ignore case)
-    - display that movie (add to our movies array)
   3. Pagination
     - first only display 8
     - display more by 8 (or less than 8 if not a multiple of 8)
@@ -25,7 +19,6 @@ export class Movies extends Component {
       listChoice: '',
       shouldUpdate: false,
     }
-    //this.movies = [];
   }
 
   enlarge(imgSrc, title, director, rating, plot, idVal) {
@@ -96,7 +89,7 @@ export class Movies extends Component {
 
     var opt = document.createElement('option');
     opt.value = '';
-    opt.innerHTML = 'Add to List';
+    opt.innerHTML = 'Select List';
     opt.disabled = 'true';
     opt.selected = 'true';
     opt.hidden = 'true';
@@ -110,6 +103,7 @@ export class Movies extends Component {
 
     var listDiv = document.createElement('div');
     var listBtn = document.createElement('button');
+    listBtn.id = 'list-btn';
     listBtn.innerHTML = 'Add to List';
     listDiv.appendChild(addList);
     listDiv.appendChild(listBtn);
@@ -128,8 +122,8 @@ export class Movies extends Component {
     document.getElementById('lb').appendChild(lbMovie);
     document.getElementById('lbMovie').appendChild(lbContent);
     document.getElementById('lbMovie').appendChild(lbInfo);
-    document.getElementById('lbInfo').appendChild(delButton);
     document.getElementById('lbInfo').appendChild(listDiv);
+    document.getElementById('lbInfo').appendChild(delButton);
     document.getElementById('lb').addEventListener('click', function(event) {
       if(event.target.className === 'movLightbox') {
         document.getElementById('lb').removeChild(document.getElementById('lbMovie'));
@@ -203,7 +197,6 @@ export class Movies extends Component {
     this.setState({[field]: value});
     
     let listChoice = document.getElementById('list').value;
-    console.log(listChoice);
     if(listChoice === 'all') {
       let ref = firebase.database().ref('movies');
       ref.on('value', snapshot => {
@@ -228,20 +221,44 @@ export class Movies extends Component {
       })
     }
   }
+
+  searchMovies() {
+    let movChoice = document.getElementById('search').value.toLowerCase();
+
+    let ref = firebase.database().ref('movies');
+    ref.on('value', snapshot => {
+      let movies = snapshot.val();
+        let newData = [];
+        for (let entry in movies) {
+          let title = (movies[entry].name).toLowerCase();
+          if (title.includes(movChoice)) {
+            newData.push(movies[entry].id);
+          }
+        }
+        console.log(newData);
+        this.setState({movies: newData});
+    })
+  }
   
   render() {
     return (
       <div>
         <div className='content'>
-          <div id='list-container'>
-            <select name='listChoice' id='list' onChange={this.myChangeHandler}>
-              <option value='all'>All</option>
-              {
-                this.state.lists.map((list) => (
-                  <option value={list}>{list}</option>
-                ))
-              }
-            </select>
+          <div id='top-bar'>
+            <div id='list-container'>
+              <select name='listChoice' id='list' onChange={this.myChangeHandler}>
+                <option value='all'>All</option>
+                {
+                  this.state.lists.map((list) => (
+                    <option value={list}>{list}</option>
+                  ))
+                }
+              </select>
+            </div>
+            <div id='search-bar'>
+              <input type='text' placeholder='Movie Title' name='search' id='search' />
+              <button id='search-btn' onClick={this.searchMovies.bind(this)}>Search</button>
+            </div>
           </div>
           <div className='mov-container'>
             <MovieGallery movieList={this.state.movies} enlarge={this.enlarge} />

@@ -330,24 +330,65 @@ b {
   cursor: pointer;
 }
 
-#add-list {
+#top-bar {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  background-color: #FEFEFE;
+}
+
+#search-bar {
+  width: 300px;
+}
+
+#search {
+  width: 250px;
+}
+
+#search-btn {
+  margin: 4px 0px;
+  padding: 4px 4px;
+  float: right;
   background-color: #507A77;
   color: #FFF;
   border: 1px solid #2F4F4D;
+  cursor: pointer;
+}
+
+#add-list {
+  background-color: #FFF;
+  color: #333;
+  border: 1px solid #507A77;
   padding: 16px 8px;
   font-size: 14px;
+  width: 150px;
+  cursor: pointer;
+  float: left;
+}
+
+#list-btn {
+  background-color: #507A77;
+  color: #FFF;
+  border: 1px solid #2F4F4D;
+  padding: 2px 8px;
+  font-size: 14px;
+  margin: 8px 0px 0px 4px;
+  float: left;
   cursor: pointer;
 }
 
 #list-container {
-  margin: 20px 0px 20px 10px;
-  width: 150px;
+  width: 200px;
+  margin-top: 5px;
+  float: right;
 }
 
 #delButton {
   background-color: #B00000;
   color: #FFF;
-  padding: 4px 8px;
+  float: right;
+  margin: 8px 0px 0px 4px;
+  padding: 2px 8px;
   font-size: 14px;
 }
 
@@ -368,11 +409,13 @@ b {
 }
 
 .movLightbox-container {
-  width: 650px;
+  width: 750px;
   margin: auto;
-  max-width: 750px;
+  max-width: 850px;
   background-color: #FFF;
   border: 5px solid #FFF;
+  border-radius: 10px;
+  box-shadow: 0px 0px 8px #000;
   display: flex;
   flex-direction: row;
 }
@@ -412,7 +455,7 @@ b {
   margin: auto;
   padding: 0px 20px;
   float: right;
-  max-width: 750px;
+  max-width: 850px;
   color: #555;
 }
 
@@ -424,8 +467,21 @@ b {
 }
 
 @media only screen and (max-width: 750px){
+  .rating { font-size: 12px; }
+  #delButton { float: left; }
   .lightbox-content { width: 90%; }
   .movLightbox-container { width: 500px; }
+  .movLightbox-content { width: 250px; }
+  .director {
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .title {
+    color: #2F4F4D;
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 36px;
+  }
   .section {
     padding: 10px;
     display: flex;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import config from '../config.js';
+const axios = require('axios');
 const firebase = require('firebase')
 
 export class Add extends Component {
@@ -7,6 +8,7 @@ export class Add extends Component {
     super();
     this.state = {
       movId: '',
+      title: '',
       movies: [],
       shouldUpdate: false,
     }
@@ -49,14 +51,35 @@ export class Add extends Component {
     }
   }
 
+  getMovieName(obj, req) {
+    axios.get(req)
+    .then(function (response) {
+      // handle success
+      obj.setState({
+        title: response.data.Title,
+      });
+      //console.log(response.data);
+    })
+    .then(function () {
+      let formObj = {
+        id: obj.state.movId, 
+        name: obj.state.title,
+      };
+      console.log("HERE: "+obj.state.title);
+      firebase.database().ref('movies').push().set(formObj);
+      obj.setState({shouldUpdate: true});
+      alert("Movie successfully added!");
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+  }
+
   myFormHandler = (event) => {
     event.preventDefault();
-    let formObj = {
-      id: this.state.movId, 
-    };
-    firebase.database().ref('movies').push().set(formObj);
-    this.setState({shouldUpdate: true});
-    alert("Movie successfully added!");
+    let req = 'https://www.omdbapi.com/?apikey=8ac22864&i='+this.state.movId;
+    this.getMovieName(this, req);
   }
 
   myChangeHandler = (event) => {
