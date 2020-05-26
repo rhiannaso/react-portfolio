@@ -295,11 +295,12 @@ b {
 /* movies.js */
 
 .mov-container {
-  margin-top: 40px;
+  margin-top: 0px;
   display: grid;
   justify-items: center;
   justify-content: center;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 400px));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 300px));
+  grid-gap: 4px;
 }
 
 .mov-child {
@@ -315,9 +316,39 @@ b {
 }
 
 .mov-child img {
-  width: 350px;
+  width: 250px;
   border: 4px solid #000;
   cursor: pointer;
+}
+
+#list {
+  background-color: #507A77;
+  color: #FFF;
+  border: 1px solid #2F4F4D;
+  padding: 16px 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#add-list {
+  background-color: #507A77;
+  color: #FFF;
+  border: 1px solid #2F4F4D;
+  padding: 16px 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#list-container {
+  margin: 20px 0px 20px 10px;
+  width: 150px;
+}
+
+#delButton {
+  background-color: #B00000;
+  color: #FFF;
+  padding: 4px 8px;
+  font-size: 14px;
 }
 
 /* movie lightbox */
@@ -385,6 +416,13 @@ b {
   color: #555;
 }
 
+/* Add.js */
+
+#add-box {
+  margin: 30px;
+  width: 700px;
+}
+
 @media only screen and (max-width: 750px){
   .lightbox-content { width: 90%; }
   .movLightbox-container { width: 500px; }
@@ -409,5 +447,8 @@ b {
     height: 100%;
     text-align: center;
     border-bottom: 2px solid transparent;
+  }
+  #add-box {
+    width: 90%;
   }
 }

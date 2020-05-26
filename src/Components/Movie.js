@@ -11,6 +11,7 @@ export class Movie extends Component {
       director: '',
       imdb: '',
       plot: '',
+      shouldUpdate: false,
     }
   }
 
@@ -20,6 +21,22 @@ export class Movie extends Component {
 
   resetPoster(e) {
     e.target.style.opacity = 1;
+  }
+
+  componentDidMount(){
+    let req = 'https://www.omdbapi.com/?apikey=8ac22864&i='+this.props.movie;
+    this.getMovieInfo(this, req);
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot){
+    if(this.state.shouldUpdate !== prevState.shouldUpdate){
+      let req = 'https://www.omdbapi.com/?apikey=8ac22864&i='+this.props.movie;
+      this.getMovieInfo(this, req);
+    }
+    if(this.props.movie !== prevProps.movie) {
+      let req = 'https://www.omdbapi.com/?apikey=8ac22864&i='+this.props.movie;
+      this.getMovieInfo(this, req);
+    }
   }
 
   getMovieInfo(obj, req) {
@@ -34,7 +51,7 @@ export class Movie extends Component {
         imdb: response.data.imdbRating,
         plot: response.data.Plot,
       });
-      console.log(response.data);
+      //console.log(response.data);
     })
     .catch(function (error) {
       // handle error
@@ -43,11 +60,9 @@ export class Movie extends Component {
   }
 
   render() {
-    let req = 'https://www.omdbapi.com/?apikey=8ac22864&i='+this.props.movie;
     return(
       <div className='mov-child'>
-        {this.getMovieInfo(this, req)}
-        <img src={this.state.src} onMouseEnter={this.dimPoster} onMouseLeave={this.resetPoster} onClick={this.props.enlarge.bind(this, this.state.src, this.state.title, this.state.director, this.state.imdb, this.state.plot)} alt={this.state.title}/>
+        <img src={this.state.src} onMouseEnter={this.dimPoster} onMouseLeave={this.resetPoster} onClick={this.props.enlarge.bind(this, this.state.src, this.state.title, this.state.director, this.state.imdb, this.state.plot, this.props.movie)} alt={this.state.title}/>
       </div>      
     );
   }
