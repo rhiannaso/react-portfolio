@@ -8,7 +8,11 @@ export class Add extends Component {
     super();
     this.state = {
       movId: '',
+      src: '',
       title: '',
+      director: '',
+      imdb: '',
+      plot: '',
       movies: [],
       shouldUpdate: false,
     }
@@ -56,19 +60,38 @@ export class Add extends Component {
     .then(function (response) {
       // handle success
       obj.setState({
+        src: response.data.Poster,
         title: response.data.Title,
+        director: response.data.Director,
+        imdb: response.data.imdbRating,
+        plot: response.data.Plot,
       });
       //console.log(response.data);
     })
     .then(function () {
       let formObj = {
-        id: obj.state.movId, 
+        //id: obj.state.movId, 
         name: obj.state.title,
+        src: obj.state.src,
+        director: obj.state.director,
+        imdb: obj.state.imdb,
+        plot: obj.state.plot,
       };
-      console.log("HERE: "+obj.state.title);
-      firebase.database().ref('movies').push().set(formObj);
-      obj.setState({shouldUpdate: true});
-      alert("Movie successfully added!");
+      // Prevent duplicates
+      let ref = firebase.database().ref('movies');
+      ref.once('value')
+      .then(function(snapshot) {
+        let movExists = snapshot.child(obj.state.movId).exists();
+        if(movExists) {
+          alert('Movie has already been added.');
+        } else {
+          firebase.database().ref('movies').child(obj.state.movId).set(formObj);
+          //firebase.database().ref('movies/'+obj.state.movId).push().set(formObj);
+          obj.setState({shouldUpdate: true});
+          alert('Movie successfully added!');
+        }
+        
+      });
     })
     .catch(function (error) {
       // handle error

@@ -87,6 +87,17 @@ export class Movies extends Component {
         }
     });
 
+    let relRef = firebase.database().ref('relations');
+    relRef.on('value', snapshot => {
+      let rels = snapshot.val();
+        for (let entry in rels) {
+          if(rels[entry].mov === idVal) {
+            let pos = otherLists.indexOf(rels[entry].list);
+            otherLists.splice(pos, 1);
+          }
+        }
+    });
+
     var opt = document.createElement('option');
     opt.value = '';
     opt.innerHTML = 'Select List';
@@ -143,9 +154,17 @@ export class Movies extends Component {
       let movies = snapshot.val();
         let newData = [];
         for (let entry in movies) {
-          newData.push(
+          newData.push({
+            id:  entry,
+            name:  movies[entry].name,
+            src:  movies[entry].src,
+            director:  movies[entry].director,
+            imdb:  movies[entry].imdb,
+            plot:  movies[entry].plot,
+          })
+          /*newData.push(
             movies[entry].id
-          )
+          )*/
         }
         this.setState({movies: newData});
     })
@@ -171,9 +190,17 @@ export class Movies extends Component {
         let movies = snapshot.val();
           let newData = [];
           for (let entry in movies) {
-            newData.push(
+            newData.push({
+              id:  entry,
+              name:  movies[entry].name,
+              src:  movies[entry].src,
+              director:  movies[entry].director,
+              imdb:  movies[entry].imdb,
+              plot:  movies[entry].plot,
+            })
+            /*newData.push(
               movies[entry].id,
-            )
+            )*/
           }
           this.setState({movies: newData});
       })
@@ -203,18 +230,47 @@ export class Movies extends Component {
         let movies = snapshot.val();
           let newData = [];
           for (let entry in movies) {
-            newData.push(movies[entry].id);
+            newData.push({
+              id:  entry,
+              name:  movies[entry].name,
+              src:  movies[entry].src,
+              director:  movies[entry].director,
+              imdb:  movies[entry].imdb,
+              plot:  movies[entry].plot,
+            })
+            //newData.push(movies[entry].id);
           }
           this.setState({movies: newData});
       })
     } else {
+      let movsInList = [];
       let ref = firebase.database().ref('relations');
       ref.on('value', snapshot => {
         let rels = snapshot.val();
-          let newData = [];
+          //let newData = [];
           for (let entry in rels) {
             if(rels[entry].list === listChoice) {
-              newData.push(rels[entry].mov);
+              //newData.push(rels[entry].mov);
+              movsInList.push(rels[entry].mov);
+            }
+          }
+          //this.setState({movies: newData});
+      })
+      let movsRef = firebase.database().ref('movies');
+      movsRef.on('value', snapshot => {
+        let movies = snapshot.val();
+          let newData = [];
+          for (let entry in movies) {
+              //newData.push(rels[entry].mov);
+            if (movsInList.includes(entry)) {
+              newData.push({
+                id:  entry,
+                name:  movies[entry].name,
+                src:  movies[entry].src,
+                director:  movies[entry].director,
+                imdb:  movies[entry].imdb,
+                plot:  movies[entry].plot,
+              })
             }
           }
           this.setState({movies: newData});
@@ -232,10 +288,17 @@ export class Movies extends Component {
         for (let entry in movies) {
           let title = (movies[entry].name).toLowerCase();
           if (title.includes(movChoice)) {
-            newData.push(movies[entry].id);
+            //newData.push(movies[entry].id);
+            newData.push({
+              id:  entry,
+              name:  movies[entry].name,
+              src:  movies[entry].src,
+              director:  movies[entry].director,
+              imdb:  movies[entry].imdb,
+              plot:  movies[entry].plot,
+            })
           }
         }
-        console.log(newData);
         this.setState({movies: newData});
     })
   }
