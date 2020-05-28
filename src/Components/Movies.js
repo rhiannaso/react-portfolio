@@ -425,6 +425,11 @@ export class Movies extends Component {
                   })
                 }
               }
+              if(newData.length < 9) {
+                document.getElementById('pag-container').style.display = 'none';
+              } else {
+                document.getElementById('pag-container').style.display = 'block';
+              }
               this.setState({movies: newData});
           })
       })
@@ -452,7 +457,12 @@ export class Movies extends Component {
             })
           }
         }
-        this.setState({movies: newData}, this.getNumPages());
+        if(newData.length < 9) {
+          document.getElementById('pag-container').style.display = 'none';
+        } else {
+          document.getElementById('pag-container').style.display = 'block';
+        }
+        this.setState({movies: newData});
     })
   }
   
