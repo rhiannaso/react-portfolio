@@ -14,6 +14,8 @@ export class Movies extends Component {
   constructor(props) {
     super();
     this.state = {
+      currPoint: '',
+      lastMov: '',
       movies: [],
       lists: [],
       listChoice: '',
@@ -51,7 +53,7 @@ export class Movies extends Component {
         ref.on('value', snapshot => {
           let movies = snapshot.val();
             for (let entry in movies) {
-              if(movies[entry].id === idVal) {
+              if(entry === idVal) {
                 firebase.database().ref('movies/'+entry).remove();
               }
             }
@@ -118,13 +120,16 @@ export class Movies extends Component {
     listDiv.appendChild(listBtn);
     listBtn.onclick = function () {
       var choice = document.getElementById('add-list').value;
-      
-      let formObj = {
-        mov: idVal, 
-        list: choice,
-      };
-      firebase.database().ref('relations').push().set(formObj);
-      alert('Successfully added '+title+' to '+choice+' list.');
+      if(choice.length === 0) {
+        alert('No list selected.');
+      } else {
+        let formObj = {
+          mov: idVal, 
+          list: choice,
+        };
+        firebase.database().ref('relations').push().set(formObj);
+        alert('Successfully added '+title+' to '+choice+' list.');
+      }
     };
    
     document.body.appendChild(lightbox);  
@@ -160,12 +165,38 @@ export class Movies extends Component {
             imdb:  movies[entry].imdb,
             plot:  movies[entry].plot,
           })
-          /*newData.push(
-            movies[entry].id
-          )*/
         }
-        this.setState({movies: newData});
-    })
+        this.setState({lastMov: newData[newData.length-1]});
+        if(newData.length < 9) {
+          document.getElementById('pag-container').style.display = 'none';
+        } else {
+          document.getElementById('pag-container').style.display = 'block';
+        }
+        //this.setState({movies: newData});
+    });
+
+    // PAGINATION
+    let first = ref.orderByKey().limitToFirst(9);
+    first.on('value', snapshot => {
+      let firstMovs = snapshot.val();
+      let currEight = [];
+      for (let entry in firstMovs) {
+        currEight.push({
+          id:  entry,
+          name:  firstMovs[entry].name,
+          src:  firstMovs[entry].src,
+          director:  firstMovs[entry].director,
+          imdb:  firstMovs[entry].imdb,
+          plot:  firstMovs[entry].plot,
+        });
+      }
+      this.setState({currPoint: currEight[currEight.length-1]});
+      currEight.pop();
+      this.setState({movies: currEight});
+      console.log(this.state.currPoint);
+      console.log(this.state.movies);
+    });
+
     let listRef = firebase.database().ref('lists');
     listRef.on('value', snapshot => {
       let lists = snapshot.val();
@@ -183,6 +214,22 @@ export class Movies extends Component {
     //only call set state here if it is wrapped in a condition
     //if you initialize this.state.shouldUpdate and have not changed it yet then this will not run
     if(this.state.shouldUpdate !== prevState.shouldUpdate){
+      /*let ref = firebase.database().ref('movies');
+      ref.on('value', snapshot => {
+        let movies = snapshot.val();
+          let newData = [];
+          for (let entry in movies) {
+            newData.push({
+              id:  entry,
+              name:  movies[entry].name,
+              src:  movies[entry].src,
+              director:  movies[entry].director,
+              imdb:  movies[entry].imdb,
+              plot:  movies[entry].plot,
+            })
+          }
+          this.setState({movies: newData});
+      })*/
       let ref = firebase.database().ref('movies');
       ref.on('value', snapshot => {
         let movies = snapshot.val();
@@ -196,12 +243,37 @@ export class Movies extends Component {
               imdb:  movies[entry].imdb,
               plot:  movies[entry].plot,
             })
-            /*newData.push(
-              movies[entry].id,
-            )*/
           }
-          this.setState({movies: newData});
-      })
+          this.setState({lastMov: newData[newData.length-1]});
+          if(newData.length < 9) {
+            document.getElementById('pag-container').style.display = 'none';
+          } else {
+            document.getElementById('pag-container').style.display = 'block';
+          }
+          //this.setState({movies: newData});
+      });
+
+      // PAGINATION
+      let first = ref.orderByKey().limitToFirst(9);
+      first.on('value', snapshot => {
+        let firstMovs = snapshot.val();
+        let currEight = [];
+        for (let entry in firstMovs) {
+          currEight.push({
+            id:  entry,
+            name:  firstMovs[entry].name,
+            src:  firstMovs[entry].src,
+            director:  firstMovs[entry].director,
+            imdb:  firstMovs[entry].imdb,
+            plot:  firstMovs[entry].plot,
+          });
+        }
+        this.setState({currPoint: currEight[currEight.length-1]});
+        currEight.pop();
+        this.setState({movies: currEight});
+        console.log(this.state.currPoint);
+        console.log(this.state.movies);
+      });
       let listRef = firebase.database().ref('lists');
       listRef.on('value', snapshot => {
         let lists = snapshot.val();
@@ -216,6 +288,45 @@ export class Movies extends Component {
     }
   }
 
+  getMoreMovies() {
+    let ref = firebase.database().ref('movies');
+    let next = ref.orderByKey().startAt(String(this.state.currPoint));
+    //let next = tmp.limitToFirst(9);
+    next.on('value', snapshot => {
+      let nextMovs = snapshot.val();
+      let currEight = [];
+      for (let entry in nextMovs) {
+        currEight.push({
+          id:  entry,
+          name:  nextMovs[entry].name,
+          src:  nextMovs[entry].src,
+          director:  nextMovs[entry].director,
+          imdb:  nextMovs[entry].imdb,
+          plot:  nextMovs[entry].plot,
+        });
+      }
+      console.log('curr eight');
+      console.log(currEight);
+      console.log(currEight[currEight.length-1]);
+      if(String(currEight[currEight.length-1]) !== String(this.state.lastMov)) {
+        this.setState({currPoint: currEight[currEight.length-1]});
+        currEight.pop();
+      } else {
+        console.log('in here');
+        document.getElementById('pag-container').style.display = 'none';
+      }
+      if(currEight.length < 8) {
+        document.getElementById('pag-container').style.display = 'none';
+      }
+      //console.log(currEight);
+      //let totalMovs = this.state.movies;
+      //totalMovs = totalMovs.concat(currEight);
+      this.setState({movies: currEight});
+      console.log(this.state.currPoint);
+      console.log(this.state.movies);
+    });
+  }
+
   myChangeHandler = (event) => {
     let field = event.target.name;
     let value = event.target.value;
@@ -223,7 +334,7 @@ export class Movies extends Component {
     
     let listChoice = document.getElementById('list').value;
     if(listChoice === 'all') {
-      let ref = firebase.database().ref('movies');
+      /*let ref = firebase.database().ref('movies');
       ref.on('value', snapshot => {
         let movies = snapshot.val();
           let newData = [];
@@ -239,7 +350,51 @@ export class Movies extends Component {
             //newData.push(movies[entry].id);
           }
           this.setState({movies: newData});
-      })
+      })*/
+      let ref = firebase.database().ref('movies');
+      ref.on('value', snapshot => {
+        let movies = snapshot.val();
+          let newData = [];
+          for (let entry in movies) {
+            newData.push({
+              id:  entry,
+              name:  movies[entry].name,
+              src:  movies[entry].src,
+              director:  movies[entry].director,
+              imdb:  movies[entry].imdb,
+              plot:  movies[entry].plot,
+            })
+          }
+          this.setState({lastMov: newData[newData.length-1]});
+          if(newData.length < 9) {
+            document.getElementById('pag-container').style.display = 'none';
+          } else {
+            document.getElementById('pag-container').style.display = 'block';
+          }
+          //this.setState({movies: newData});
+      });
+
+      // PAGINATION
+      let first = ref.orderByKey().limitToFirst(9);
+      first.on('value', snapshot => {
+        let firstMovs = snapshot.val();
+        let currEight = [];
+        for (let entry in firstMovs) {
+          currEight.push({
+            id:  entry,
+            name:  firstMovs[entry].name,
+            src:  firstMovs[entry].src,
+            director:  firstMovs[entry].director,
+            imdb:  firstMovs[entry].imdb,
+            plot:  firstMovs[entry].plot,
+          });
+        }
+        this.setState({currPoint: currEight[currEight.length-1]});
+        currEight.pop();
+        this.setState({movies: currEight});
+        console.log(this.state.currPoint);
+        console.log(this.state.movies);
+      });
     } else {
       let movsInList = [];
       let ref = firebase.database().ref('relations');
@@ -325,7 +480,7 @@ export class Movies extends Component {
             <MovieGallery movieList={this.state.movies} enlarge={this.enlarge} />
           </div>
           <div id='pag-container'>
-            <button id='pagination'>Load More</button>
+            <button id='pagination' onClick={this.getMoreMovies.bind(this)}>Load More</button>
           </div>
         </div>
         <button className='scrollButton' style={{display: this.props.display}} onClick={this.props.scrollToTop}>Scroll to Top</button>
