@@ -19,6 +19,7 @@ export class Movies extends Component {
       movies: [],
       lists: [],
       listChoice: '',
+      displayButton: 'none',
       shouldUpdate: false,
     }
   }
@@ -168,9 +169,11 @@ export class Movies extends Component {
         }
         this.setState({lastMov: newData[newData.length-1]});
         if(newData.length < 9) {
-          document.getElementById('pag-container').style.display = 'none';
+          //document.getElementById('pag-container').style.display = 'none';
+          this.setState({displayButton: 'none'});
         } else {
-          document.getElementById('pag-container').style.display = 'block';
+          //document.getElementById('pag-container').style.display = 'block';
+          this.setState({displayButton: 'block'});
         }
         //this.setState({movies: newData});
     });
@@ -193,8 +196,6 @@ export class Movies extends Component {
       this.setState({currPoint: currEight[currEight.length-1]});
       currEight.pop();
       this.setState({movies: currEight});
-      console.log(this.state.currPoint);
-      console.log(this.state.movies);
     });
 
     let listRef = firebase.database().ref('lists');
@@ -246,9 +247,11 @@ export class Movies extends Component {
           }
           this.setState({lastMov: newData[newData.length-1]});
           if(newData.length < 9) {
-            document.getElementById('pag-container').style.display = 'none';
+            //document.getElementById('pag-container').style.display = 'none';
+            this.setState({displayButton: 'none'});
           } else {
-            document.getElementById('pag-container').style.display = 'block';
+            //document.getElementById('pag-container').style.display = 'block';
+            this.setState({displayButton: 'block'});
           }
           //this.setState({movies: newData});
       });
@@ -305,25 +308,18 @@ export class Movies extends Component {
           plot:  nextMovs[entry].plot,
         });
       }
-      console.log('curr eight');
-      console.log(currEight);
-      console.log(currEight[currEight.length-1]);
       if(String(currEight[currEight.length-1]) !== String(this.state.lastMov)) {
         this.setState({currPoint: currEight[currEight.length-1]});
         currEight.pop();
       } else {
-        console.log('in here');
-        document.getElementById('pag-container').style.display = 'none';
+        //document.getElementById('pag-container').style.display = 'none';
+        this.setState({displayButton: 'none'});
       }
       if(currEight.length < 8) {
-        document.getElementById('pag-container').style.display = 'none';
+        //document.getElementById('pag-container').style.display = 'none';
+        this.setState({displayButton: 'none'});
       }
-      //console.log(currEight);
-      //let totalMovs = this.state.movies;
-      //totalMovs = totalMovs.concat(currEight);
       this.setState({movies: currEight});
-      console.log(this.state.currPoint);
-      console.log(this.state.movies);
     });
   }
 
@@ -367,9 +363,11 @@ export class Movies extends Component {
           }
           this.setState({lastMov: newData[newData.length-1]});
           if(newData.length < 9) {
-            document.getElementById('pag-container').style.display = 'none';
+            //document.getElementById('pag-container').style.display = 'none';
+            this.setState({displayButton: 'none'});
           } else {
-            document.getElementById('pag-container').style.display = 'block';
+            //document.getElementById('pag-container').style.display = 'block';
+            this.setState({displayButton: 'block'});
           }
           //this.setState({movies: newData});
       });
@@ -426,9 +424,11 @@ export class Movies extends Component {
                 }
               }
               if(newData.length < 9) {
-                document.getElementById('pag-container').style.display = 'none';
+                //document.getElementById('pag-container').style.display = 'none';
+                this.setState({displayButton: 'none'});
               } else {
-                document.getElementById('pag-container').style.display = 'block';
+                //document.getElementById('pag-container').style.display = 'block';
+                this.setState({displayButton: 'block'});
               }
               this.setState({movies: newData});
           })
@@ -458,9 +458,11 @@ export class Movies extends Component {
           }
         }
         if(newData.length < 9) {
-          document.getElementById('pag-container').style.display = 'none';
+          //document.getElementById('pag-container').style.display = 'none';
+          this.setState({displayButton: 'none'});
         } else {
-          document.getElementById('pag-container').style.display = 'block';
+          //document.getElementById('pag-container').style.display = 'block';
+          this.setState({displayButton: 'block'});
         }
         this.setState({movies: newData});
     })
@@ -489,7 +491,7 @@ export class Movies extends Component {
           <div className='mov-container'>
             <MovieGallery movieList={this.state.movies} enlarge={this.enlarge} />
           </div>
-          <div id='pag-container'>
+          <div id='pag-container' style={{display: this.state.displayButton}}>
             <button id='pagination' onClick={this.getMoreMovies.bind(this)}>Load More</button>
           </div>
         </div>

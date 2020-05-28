@@ -13,7 +13,7 @@ export class Add extends Component {
       director: '',
       imdb: '',
       plot: '',
-      movies: [],
+      //movies: [],
       shouldUpdate: false,
     }
   }
@@ -23,7 +23,7 @@ export class Add extends Component {
     if (!firebase.apps.length) {
       firebase.initializeApp(config);
     }
-    let ref = firebase.database().ref('movies');
+    /*let ref = firebase.database().ref('movies');
     ref.on('value', snapshot => {
       let movies = snapshot.val();
         let newData = [];
@@ -33,7 +33,7 @@ export class Add extends Component {
           })
         }
         this.setState({movies: newData});
-    })
+    })*/
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
@@ -41,7 +41,7 @@ export class Add extends Component {
     //if you initialize this.state.shouldUpdate and have not changed it yet then this will not run
     if(this.state.shouldUpdate !== prevState.shouldUpdate){
       //same code as above to retrieve the data 
-      let ref = firebase.database().ref('movies');
+      /*let ref = firebase.database().ref('movies');
       ref.on('value', snapshot => {
         let movies = snapshot.val();
           let newData = [];
@@ -51,7 +51,7 @@ export class Add extends Component {
             })
           }
           this.setState({movies: newData});
-      })
+      })*/
     }
   }
 
