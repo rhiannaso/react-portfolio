@@ -392,6 +392,22 @@ b {
   font-size: 14px;
 }
 
+#pag-container {
+  width: 100%;
+  margin: 20px 0px 0px 0px;
+  text-align: center;
+}
+
+#pagination {
+  background-color: #507A77;
+  color: #FFF;
+  border: 1px solid #2F4F4D;
+  padding: 8px;
+  font-size: 14px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
 /* movie lightbox */
 
 .movLightbox {

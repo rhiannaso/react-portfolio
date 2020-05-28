@@ -85,32 +85,30 @@ export class Movies extends Component {
         for (let entry in lists) {
           otherLists.push(lists[entry].name);
         }
+        let relRef = firebase.database().ref('relations');
+        relRef.on('value', snapshot => {
+          let rels = snapshot.val();
+            for (let entry in rels) {
+              if(rels[entry].mov === idVal) {
+                let pos = otherLists.indexOf(rels[entry].list);
+                otherLists.splice(pos, 1);
+              }
+            }
+            var opt = document.createElement('option');
+            opt.value = '';
+            opt.innerHTML = 'Select List';
+            opt.disabled = 'true';
+            opt.selected = 'true';
+            opt.hidden = 'true';
+            addList.appendChild(opt);
+            for(var i in otherLists) {
+              opt = document.createElement('option');
+              opt.value= otherLists[i];
+              opt.innerHTML = otherLists[i]; 
+              addList.appendChild(opt);
+            }
+        });
     });
-
-    let relRef = firebase.database().ref('relations');
-    relRef.on('value', snapshot => {
-      let rels = snapshot.val();
-        for (let entry in rels) {
-          if(rels[entry].mov === idVal) {
-            let pos = otherLists.indexOf(rels[entry].list);
-            otherLists.splice(pos, 1);
-          }
-        }
-    });
-
-    var opt = document.createElement('option');
-    opt.value = '';
-    opt.innerHTML = 'Select List';
-    opt.disabled = 'true';
-    opt.selected = 'true';
-    opt.hidden = 'true';
-    addList.appendChild(opt);
-    for(var i in otherLists) {
-      opt = document.createElement('option');
-      opt.value= otherLists[i];
-      opt.innerHTML = otherLists[i]; 
-      addList.appendChild(opt);
-    }
 
     var listDiv = document.createElement('div');
     var listBtn = document.createElement('button');
@@ -255,25 +253,25 @@ export class Movies extends Component {
             }
           }
           //this.setState({movies: newData});
-      })
-      let movsRef = firebase.database().ref('movies');
-      movsRef.on('value', snapshot => {
-        let movies = snapshot.val();
-          let newData = [];
-          for (let entry in movies) {
-              //newData.push(rels[entry].mov);
-            if (movsInList.includes(entry)) {
-              newData.push({
-                id:  entry,
-                name:  movies[entry].name,
-                src:  movies[entry].src,
-                director:  movies[entry].director,
-                imdb:  movies[entry].imdb,
-                plot:  movies[entry].plot,
-              })
-            }
-          }
-          this.setState({movies: newData});
+          let movsRef = firebase.database().ref('movies');
+          movsRef.on('value', snapshot => {
+            let movies = snapshot.val();
+              let newData = [];
+              for (let entry in movies) {
+                  //newData.push(rels[entry].mov);
+                if (movsInList.includes(entry)) {
+                  newData.push({
+                    id:  entry,
+                    name:  movies[entry].name,
+                    src:  movies[entry].src,
+                    director:  movies[entry].director,
+                    imdb:  movies[entry].imdb,
+                    plot:  movies[entry].plot,
+                  })
+                }
+              }
+              this.setState({movies: newData});
+          })
       })
     }
   }
@@ -299,7 +297,7 @@ export class Movies extends Component {
             })
           }
         }
-        this.setState({movies: newData});
+        this.setState({movies: newData}, this.getNumPages());
     })
   }
   
@@ -325,6 +323,9 @@ export class Movies extends Component {
           </div>
           <div className='mov-container'>
             <MovieGallery movieList={this.state.movies} enlarge={this.enlarge} />
+          </div>
+          <div id='pag-container'>
+            <button id='pagination'>Load More</button>
           </div>
         </div>
         <button className='scrollButton' style={{display: this.props.display}} onClick={this.props.scrollToTop}>Scroll to Top</button>
