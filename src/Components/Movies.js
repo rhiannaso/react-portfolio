@@ -18,7 +18,7 @@ export class Movies extends Component {
       lastMov: '',
       movies: [],
       lists: [],
-      listChoice: '',
+      listChoice: 'all',
       displayButton: 'none',
       shouldUpdate: false,
     }
@@ -51,7 +51,8 @@ export class Movies extends Component {
       // Is there a way to do it without being inline?
       if(window.confirm('Are you sure you want to delete '+title+'?')) {
         let ref = firebase.database().ref('movies');
-        ref.on('value', snapshot => {
+        ref.once('value').then(snapshot => {
+        //ref.on('value', snapshot => {
           let movies = snapshot.val();
             for (let entry in movies) {
               if(entry === idVal) {
@@ -61,7 +62,8 @@ export class Movies extends Component {
         })
 
         let refList = firebase.database().ref('relations');
-        refList.on('value', snapshot => {
+        refList.once('value').then(snapshot => {
+        //refList.on('value', snapshot => {
           let relations = snapshot.val();
             for (let entry in relations) {
               if(relations[entry].mov === idVal) {
@@ -187,21 +189,56 @@ export class Movies extends Component {
     // PAGINATION
     let first = this.ref.orderByKey().limitToFirst(9);
     first.on('value', snapshot => {
-      let firstMovs = snapshot.val();
-      let currEight = [];
-      for (let entry in firstMovs) {
-        currEight.push({
-          id:  entry,
-          name:  firstMovs[entry].name,
-          src:  firstMovs[entry].src,
-          director:  firstMovs[entry].director,
-          imdb:  firstMovs[entry].imdb,
-          plot:  firstMovs[entry].plot,
-        });
+      if(this.state.listChoice === 'all') {
+        let firstMovs = snapshot.val();
+        let currEight = [];
+        for (let entry in firstMovs) {
+          currEight.push({
+            id:  entry,
+            name:  firstMovs[entry].name,
+            src:  firstMovs[entry].src,
+            director:  firstMovs[entry].director,
+            imdb:  firstMovs[entry].imdb,
+            plot:  firstMovs[entry].plot,
+          });
+        }
+        this.setState({currPoint: currEight[currEight.length-1].id});
+        currEight.pop();
+        this.setState({movies: currEight});
+      } else {
+        let movsInList = [];
+        let ref = firebase.database().ref('relations');
+        ref.once('value').then(snapshot => {
+        //ref.on('value', snapshot => {
+          let rels = snapshot.val();
+          for (let entry in rels) {
+            if(rels[entry].list === this.state.listChoice) {
+              movsInList.push(rels[entry].mov);
+            }
+          }
+          let movsRef = firebase.database().ref('movies');
+          movsRef.once('value').then(snapshot => {
+          //movsRef.on('value', snapshot => {
+            let movies = snapshot.val();
+            let newData = [];
+            for (let entry in movies) {
+              if (movsInList.includes(entry)) {
+                newData.push({
+                  id:  entry,
+                  name:  movies[entry].name,
+                  src:  movies[entry].src,
+                  director:  movies[entry].director,
+                  imdb:  movies[entry].imdb,
+                  plot:  movies[entry].plot,
+                })
+              }
+            }
+            this.setState({movies: newData});
+            this.setState({displayButton: 'none'});
+          })
+          //ref.off();
+        })
       }
-      this.setState({currPoint: currEight[currEight.length-1].id});
-      currEight.pop();
-      this.setState({movies: currEight});
     });
 
     this.listRef = firebase.database().ref('lists');
@@ -386,12 +423,8 @@ export class Movies extends Component {
               })
             }
           }
-          if(newData.length < 9) {
-            this.setState({displayButton: 'none'});
-          } else {
-            this.setState({displayButton: 'block'});
-          }
           this.setState({movies: newData});
+          this.setState({displayButton: 'none'});
         })
         //ref.off();
       })
@@ -420,13 +453,13 @@ export class Movies extends Component {
             })
           }
         }
-        if(newData.length < 9) {
+        //if(newData.length < 9) {
           //document.getElementById('pag-container').style.display = 'none';
-          this.setState({displayButton: 'none'});
-        } else {
+        this.setState({displayButton: 'none'});
+        /*} else {
           //document.getElementById('pag-container').style.display = 'block';
           this.setState({displayButton: 'block'});
-        }
+        }*/
         this.setState({movies: newData});
     })
   }
