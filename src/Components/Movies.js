@@ -82,13 +82,15 @@ export class Movies extends Component {
     addList.name = 'addLists';
     let listRef = firebase.database().ref('lists');
     let otherLists = [];
-    listRef.on('value', snapshot => {
+    listRef.once('value').then(snapshot => {
+    //listRef.on('value', snapshot => {
       let lists = snapshot.val();
         for (let entry in lists) {
           otherLists.push(lists[entry].name);
         }
         let relRef = firebase.database().ref('relations');
-        relRef.on('value', snapshot => {
+        relRef.once('value').then(snapshot => {
+        //relRef.on('value', snapshot => {
           let rels = snapshot.val();
             for (let entry in rels) {
               if(rels[entry].mov === idVal) {
@@ -154,7 +156,6 @@ export class Movies extends Component {
 
   componentDidMount(){
     document.title = 'Great Movies';
-    console.log('hi');
     if (!firebase.apps.length) {
       firebase.initializeApp(config);
     }
@@ -201,8 +202,6 @@ export class Movies extends Component {
       this.setState({currPoint: currEight[currEight.length-1].id});
       currEight.pop();
       this.setState({movies: currEight});
-      console.log('didmount update');
-      console.log(this.state.movies);
     });
 
     this.listRef = firebase.database().ref('lists');
@@ -222,22 +221,6 @@ export class Movies extends Component {
     //only call set state here if it is wrapped in a condition
     //if you initialize this.state.shouldUpdate and have not changed it yet then this will not run
     if(this.state.shouldUpdate !== prevState.shouldUpdate){
-      /*let ref = firebase.database().ref('movies');
-      ref.on('value', snapshot => {
-        let movies = snapshot.val();
-          let newData = [];
-          for (let entry in movies) {
-            newData.push({
-              id:  entry,
-              name:  movies[entry].name,
-              src:  movies[entry].src,
-              director:  movies[entry].director,
-              imdb:  movies[entry].imdb,
-              plot:  movies[entry].plot,
-            })
-          }
-          this.setState({movies: newData});
-      })*/
       let ref = firebase.database().ref('movies');
       ref.on('value', snapshot => {
         let movies = snapshot.val();
@@ -262,7 +245,6 @@ export class Movies extends Component {
           }
           //this.setState({movies: newData});
       });
-      console.log("IN HEREEEEEEE");
       // PAGINATION
       let first = ref.orderByKey().limitToFirst(9);
       first.on('value', snapshot => {
@@ -281,9 +263,6 @@ export class Movies extends Component {
         this.setState({currPoint: currEight[currEight.length-1].id});
         currEight.pop();
         this.setState({movies: currEight});
-        //console.log(this.state.currPoint);
-        console.log('didupdate update');
-        console.log(this.state.movies);
       });
       let listRef = firebase.database().ref('lists');
       listRef.on('value', snapshot => {
@@ -323,22 +302,9 @@ export class Movies extends Component {
         this.setState({currPoint: currEight[currEight.length-1].id});
         currEight.pop();
       }
-      /*if(currEight[currEight.length-1].id !== this.state.lastMov.id && currEight.length%8 !== 0) {
-        this.setState({currPoint: currEight[currEight.length-1].id});
-        currEight.pop();
-        console.log('not end');
-        console.log(currEight);
-      } else {
-        this.setState({displayButton: 'none'});
-      }*/
-      /*if(currEight.length < 8) {
-        this.setState({displayButton: 'none'});
-      }*/
       let totalMovies = this.state.movies;
       totalMovies = totalMovies.concat(currEight);
       this.setState({movies: totalMovies});
-      console.log('getMore update');
-      console.log(this.state.movies);
     });
   }
 
@@ -349,25 +315,9 @@ export class Movies extends Component {
     
     let listChoice = document.getElementById('list').value;
     if(listChoice === 'all') {
-      /*let ref = firebase.database().ref('movies');
-      ref.on('value', snapshot => {
-        let movies = snapshot.val();
-          let newData = [];
-          for (let entry in movies) {
-            newData.push({
-              id:  entry,
-              name:  movies[entry].name,
-              src:  movies[entry].src,
-              director:  movies[entry].director,
-              imdb:  movies[entry].imdb,
-              plot:  movies[entry].plot,
-            })
-            //newData.push(movies[entry].id);
-          }
-          this.setState({movies: newData});
-      })*/
       let ref = firebase.database().ref('movies');
-      ref.on('value', snapshot => {
+      ref.once('value').then(snapshot => {
+      //ref.on('value', snapshot => {
         let movies = snapshot.val();
           let newData = [];
           for (let entry in movies) {
@@ -382,18 +332,16 @@ export class Movies extends Component {
           }
           this.setState({lastMov: newData[newData.length-1]});
           if(newData.length < 9) {
-            //document.getElementById('pag-container').style.display = 'none';
             this.setState({displayButton: 'none'});
           } else {
-            //document.getElementById('pag-container').style.display = 'block';
             this.setState({displayButton: 'block'});
           }
-          //this.setState({movies: newData});
       });
 
       // PAGINATION
       let first = ref.orderByKey().limitToFirst(9);
-      first.on('value', snapshot => {
+      first.once('value').then(snapshot => {
+      //first.on('value', snapshot => {
         let firstMovs = snapshot.val();
         let currEight = [];
         for (let entry in firstMovs) {
@@ -408,52 +356,44 @@ export class Movies extends Component {
         }
         this.setState({currPoint: currEight[currEight.length-1].id});
         currEight.pop();
-        console.log(currEight);
         this.setState({movies: currEight});
-        //console.log(this.state.currPoint);
-        console.log('all change handler update');
-        console.log(this.state.movies);
       });
     } else {
       let movsInList = [];
       let ref = firebase.database().ref('relations');
-      ref.on('value', snapshot => {
+      ref.once('value').then(snapshot => {
+      //ref.on('value', snapshot => {
         let rels = snapshot.val();
-          //let newData = [];
-          for (let entry in rels) {
-            if(rels[entry].list === listChoice) {
-              //newData.push(rels[entry].mov);
-              movsInList.push(rels[entry].mov);
+        for (let entry in rels) {
+          if(rels[entry].list === listChoice) {
+            movsInList.push(rels[entry].mov);
+          }
+        }
+        let movsRef = firebase.database().ref('movies');
+        movsRef.once('value').then(snapshot => {
+        //movsRef.on('value', snapshot => {
+          let movies = snapshot.val();
+          let newData = [];
+          for (let entry in movies) {
+            if (movsInList.includes(entry)) {
+              newData.push({
+                id:  entry,
+                name:  movies[entry].name,
+                src:  movies[entry].src,
+                director:  movies[entry].director,
+                imdb:  movies[entry].imdb,
+                plot:  movies[entry].plot,
+              })
             }
           }
-          //this.setState({movies: newData});
-          let movsRef = firebase.database().ref('movies');
-          movsRef.on('value', snapshot => {
-            let movies = snapshot.val();
-              let newData = [];
-              for (let entry in movies) {
-                if (movsInList.includes(entry)) {
-                  newData.push({
-                    id:  entry,
-                    name:  movies[entry].name,
-                    src:  movies[entry].src,
-                    director:  movies[entry].director,
-                    imdb:  movies[entry].imdb,
-                    plot:  movies[entry].plot,
-                  })
-                }
-              }
-              if(newData.length < 9) {
-                //document.getElementById('pag-container').style.display = 'none';
-                this.setState({displayButton: 'none'});
-              } else {
-                //document.getElementById('pag-container').style.display = 'block';
-                this.setState({displayButton: 'block'});
-              }
-              this.setState({movies: newData});
-              console.log('list update');
-              console.log(this.state.movies);
-          })
+          if(newData.length < 9) {
+            this.setState({displayButton: 'none'});
+          } else {
+            this.setState({displayButton: 'block'});
+          }
+          this.setState({movies: newData});
+        })
+        //ref.off();
       })
     }
   }
@@ -462,7 +402,8 @@ export class Movies extends Component {
     let movChoice = document.getElementById('search').value.toLowerCase();
 
     let ref = firebase.database().ref('movies');
-    ref.on('value', snapshot => {
+    ref.once('value').then(snapshot => {
+    //ref.on('value', snapshot => {
       let movies = snapshot.val();
         let newData = [];
         for (let entry in movies) {
@@ -487,8 +428,6 @@ export class Movies extends Component {
           this.setState({displayButton: 'block'});
         }
         this.setState({movies: newData});
-        console.log('search update');
-        console.log(this.state.movies);
     })
   }
   
