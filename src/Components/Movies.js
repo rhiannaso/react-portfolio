@@ -307,15 +307,24 @@ export class Movies extends Component {
           plot:  nextMovs[entry].plot,
         });
       }
-      if(currEight[currEight.length-1].id !== this.state.lastMov.id) {
+      // If last batch 
+      if(currEight[currEight.length-1].id === this.state.lastMov.id && currEight.length <= 8) {
+        this.setState({displayButton: 'none'});
+      } else {
         this.setState({currPoint: currEight[currEight.length-1].id});
         currEight.pop();
+      }
+      /*if(currEight[currEight.length-1].id !== this.state.lastMov.id && currEight.length%8 !== 0) {
+        this.setState({currPoint: currEight[currEight.length-1].id});
+        currEight.pop();
+        console.log('not end');
+        console.log(currEight);
       } else {
         this.setState({displayButton: 'none'});
-      }
-      if(currEight.length < 8) {
+      }*/
+      /*if(currEight.length < 8) {
         this.setState({displayButton: 'none'});
-      }
+      }*/
       let totalMovies = this.state.movies;
       totalMovies = totalMovies.concat(currEight);
       this.setState({movies: totalMovies});
@@ -388,6 +397,7 @@ export class Movies extends Component {
         }
         this.setState({currPoint: currEight[currEight.length-1].id});
         currEight.pop();
+        console.log(currEight);
         this.setState({movies: currEight});
         //console.log(this.state.currPoint);
         console.log(this.state.movies);
