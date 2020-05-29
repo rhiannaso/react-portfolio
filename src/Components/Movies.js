@@ -233,12 +233,8 @@ export class Movies extends Component {
                 })
               }
             }
-            if(newData.length < 9) {
-              this.setState({displayButton: 'none'});
-            } else {
-              this.setState({displayButton: 'block'});
-            }
             this.setState({movies: newData});
+            this.setState({displayButton: 'none'});
           })
           //ref.off();
         })
@@ -427,12 +423,8 @@ export class Movies extends Component {
               })
             }
           }
-          if(newData.length < 9) {
-            this.setState({displayButton: 'none'});
-          } else {
-            this.setState({displayButton: 'block'});
-          }
           this.setState({movies: newData});
+          this.setState({displayButton: 'none'});
         })
         //ref.off();
       })
@@ -461,13 +453,13 @@ export class Movies extends Component {
             })
           }
         }
-        if(newData.length < 9) {
+        //if(newData.length < 9) {
           //document.getElementById('pag-container').style.display = 'none';
-          this.setState({displayButton: 'none'});
-        } else {
+        this.setState({displayButton: 'none'});
+        /*} else {
           //document.getElementById('pag-container').style.display = 'block';
           this.setState({displayButton: 'block'});
-        }
+        }*/
         this.setState({movies: newData});
     })
   }
