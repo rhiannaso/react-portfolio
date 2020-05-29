@@ -69,7 +69,6 @@ export class Movies extends Component {
               }
             }
         })
-
         // Close lightbox
         document.getElementById('lb').removeChild(document.getElementById('lbMovie'));
         document.body.removeChild(document.getElementById('lb'));
@@ -193,7 +192,7 @@ export class Movies extends Component {
           plot:  firstMovs[entry].plot,
         });
       }
-      this.setState({currPoint: currEight[currEight.length-1]});
+      this.setState({currPoint: currEight[currEight.length-1].id});
       currEight.pop();
       this.setState({movies: currEight});
     });
@@ -255,7 +254,7 @@ export class Movies extends Component {
           }
           //this.setState({movies: newData});
       });
-
+      console.log("IN HEREEEEEEE");
       // PAGINATION
       let first = ref.orderByKey().limitToFirst(9);
       first.on('value', snapshot => {
@@ -271,10 +270,10 @@ export class Movies extends Component {
             plot:  firstMovs[entry].plot,
           });
         }
-        this.setState({currPoint: currEight[currEight.length-1]});
+        this.setState({currPoint: currEight[currEight.length-1].id});
         currEight.pop();
         this.setState({movies: currEight});
-        console.log(this.state.currPoint);
+        //console.log(this.state.currPoint);
         console.log(this.state.movies);
       });
       let listRef = firebase.database().ref('lists');
@@ -293,8 +292,8 @@ export class Movies extends Component {
 
   getMoreMovies() {
     let ref = firebase.database().ref('movies');
-    let next = ref.orderByKey().startAt(String(this.state.currPoint));
-    //let next = tmp.limitToFirst(9);
+    let tmp = ref.orderByKey().startAt(this.state.currPoint);
+    let next = tmp.limitToFirst(9);
     next.on('value', snapshot => {
       let nextMovs = snapshot.val();
       let currEight = [];
@@ -308,18 +307,18 @@ export class Movies extends Component {
           plot:  nextMovs[entry].plot,
         });
       }
-      if(String(currEight[currEight.length-1]) !== String(this.state.lastMov)) {
-        this.setState({currPoint: currEight[currEight.length-1]});
+      if(currEight[currEight.length-1].id !== this.state.lastMov.id) {
+        this.setState({currPoint: currEight[currEight.length-1].id});
         currEight.pop();
       } else {
-        //document.getElementById('pag-container').style.display = 'none';
         this.setState({displayButton: 'none'});
       }
       if(currEight.length < 8) {
-        //document.getElementById('pag-container').style.display = 'none';
         this.setState({displayButton: 'none'});
       }
-      this.setState({movies: currEight});
+      let totalMovies = this.state.movies;
+      totalMovies = totalMovies.concat(currEight);
+      this.setState({movies: totalMovies});
     });
   }
 
@@ -387,10 +386,10 @@ export class Movies extends Component {
             plot:  firstMovs[entry].plot,
           });
         }
-        this.setState({currPoint: currEight[currEight.length-1]});
+        this.setState({currPoint: currEight[currEight.length-1].id});
         currEight.pop();
         this.setState({movies: currEight});
-        console.log(this.state.currPoint);
+        //console.log(this.state.currPoint);
         console.log(this.state.movies);
       });
     } else {
@@ -411,7 +410,6 @@ export class Movies extends Component {
             let movies = snapshot.val();
               let newData = [];
               for (let entry in movies) {
-                  //newData.push(rels[entry].mov);
                 if (movsInList.includes(entry)) {
                   newData.push({
                     id:  entry,
