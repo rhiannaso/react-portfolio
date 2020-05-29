@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/react-portfolio/static/css/main.cca603b6.chunk.css",
-    "main.js": "/react-portfolio/static/js/main.ef1e29cb.chunk.js",
-    "main.js.map": "/react-portfolio/static/js/main.ef1e29cb.chunk.js.map",
+    "main.css": "/react-portfolio/static/css/main.65db15d5.chunk.css",
+    "main.js": "/react-portfolio/static/js/main.a08d26a3.chunk.js",
+    "main.js.map": "/react-portfolio/static/js/main.a08d26a3.chunk.js.map",
     "runtime-main.js": "/react-portfolio/static/js/runtime-main.a49ad94d.js",
     "runtime-main.js.map": "/react-portfolio/static/js/runtime-main.a49ad94d.js.map",
-    "static/js/2.393eaed9.chunk.js": "/react-portfolio/static/js/2.393eaed9.chunk.js",
-    "static/js/2.393eaed9.chunk.js.map": "/react-portfolio/static/js/2.393eaed9.chunk.js.map",
+    "static/js/2.50f4baa3.chunk.js": "/react-portfolio/static/js/2.50f4baa3.chunk.js",
+    "static/js/2.50f4baa3.chunk.js.map": "/react-portfolio/static/js/2.50f4baa3.chunk.js.map",
     "index.html": "/react-portfolio/index.html",
-    "precache-manifest.62354a6c39a2e179461e3d5c50b56627.js": "/react-portfolio/precache-manifest.62354a6c39a2e179461e3d5c50b56627.js",
+    "precache-manifest.c605da5a6be683f1ce4234d18ecf61b6.js": "/react-portfolio/precache-manifest.c605da5a6be683f1ce4234d18ecf61b6.js",
     "service-worker.js": "/react-portfolio/service-worker.js",
-    "static/css/main.cca603b6.chunk.css.map": "/react-portfolio/static/css/main.cca603b6.chunk.css.map",
-    "static/js/2.393eaed9.chunk.js.LICENSE.txt": "/react-portfolio/static/js/2.393eaed9.chunk.js.LICENSE.txt",
+    "static/css/main.65db15d5.chunk.css.map": "/react-portfolio/static/css/main.65db15d5.chunk.css.map",
+    "static/js/2.50f4baa3.chunk.js.LICENSE.txt": "/react-portfolio/static/js/2.50f4baa3.chunk.js.LICENSE.txt",
     "static/media/bank.png": "/react-portfolio/static/media/bank.c5203553.png",
     "static/media/golden_gate.jpg": "/react-portfolio/static/media/golden_gate.662a121d.jpg",
     "static/media/grand_canyon.jpg": "/react-portfolio/static/media/grand_canyon.961c05b4.jpg",
@@ -28,8 +28,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.a49ad94d.js",
-    "static/js/2.393eaed9.chunk.js",
-    "static/css/main.cca603b6.chunk.css",
-    "static/js/main.ef1e29cb.chunk.js"
+    "static/js/2.50f4baa3.chunk.js",
+    "static/css/main.65db15d5.chunk.css",
+    "static/js/main.a08d26a3.chunk.js"
   ]
 }
