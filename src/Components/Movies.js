@@ -147,13 +147,19 @@ export class Movies extends Component {
     });
   }
 
+  componentWillUnmount() {
+    this.ref.off();
+    this.listRef.off();
+  }
+
   componentDidMount(){
     document.title = 'Great Movies';
+    console.log('hi');
     if (!firebase.apps.length) {
       firebase.initializeApp(config);
     }
-    let ref = firebase.database().ref('movies');
-    ref.on('value', snapshot => {
+    this.ref = firebase.database().ref('movies');
+    this.ref.on('value', snapshot => {
       let movies = snapshot.val();
         let newData = [];
         for (let entry in movies) {
@@ -178,7 +184,7 @@ export class Movies extends Component {
     });
 
     // PAGINATION
-    let first = ref.orderByKey().limitToFirst(9);
+    let first = this.ref.orderByKey().limitToFirst(9);
     first.on('value', snapshot => {
       let firstMovs = snapshot.val();
       let currEight = [];
@@ -195,10 +201,12 @@ export class Movies extends Component {
       this.setState({currPoint: currEight[currEight.length-1].id});
       currEight.pop();
       this.setState({movies: currEight});
+      console.log('didmount update');
+      console.log(this.state.movies);
     });
 
-    let listRef = firebase.database().ref('lists');
-    listRef.on('value', snapshot => {
+    this.listRef = firebase.database().ref('lists');
+    this.listRef.on('value', snapshot => {
       let lists = snapshot.val();
         let newData = [];
         for (let entry in lists) {
@@ -274,6 +282,7 @@ export class Movies extends Component {
         currEight.pop();
         this.setState({movies: currEight});
         //console.log(this.state.currPoint);
+        console.log('didupdate update');
         console.log(this.state.movies);
       });
       let listRef = firebase.database().ref('lists');
@@ -328,6 +337,8 @@ export class Movies extends Component {
       let totalMovies = this.state.movies;
       totalMovies = totalMovies.concat(currEight);
       this.setState({movies: totalMovies});
+      console.log('getMore update');
+      console.log(this.state.movies);
     });
   }
 
@@ -400,6 +411,7 @@ export class Movies extends Component {
         console.log(currEight);
         this.setState({movies: currEight});
         //console.log(this.state.currPoint);
+        console.log('all change handler update');
         console.log(this.state.movies);
       });
     } else {
@@ -439,6 +451,8 @@ export class Movies extends Component {
                 this.setState({displayButton: 'block'});
               }
               this.setState({movies: newData});
+              console.log('list update');
+              console.log(this.state.movies);
           })
       })
     }
@@ -473,6 +487,8 @@ export class Movies extends Component {
           this.setState({displayButton: 'block'});
         }
         this.setState({movies: newData});
+        console.log('search update');
+        console.log(this.state.movies);
     })
   }
   

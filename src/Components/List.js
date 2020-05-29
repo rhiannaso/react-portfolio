@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import config from '../config.js';
 const firebase = require('firebase')
 
 export class List extends Component {
@@ -11,6 +12,9 @@ export class List extends Component {
 
   componentDidMount(){
     document.title = 'Create a Movie List';
+    if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
   }
 
   myFormHandler = (event) => {
@@ -19,7 +23,7 @@ export class List extends Component {
       name: this.state.listName, 
     };
     firebase.database().ref('lists').push().set(formObj);
-    this.setState({shouldUpdate: true});
+    //this.setState({shouldUpdate: true});
     alert("List successfully created!");
   }
 
