@@ -325,7 +325,7 @@ b {
   background-color: #507A77;
   color: #FFF;
   border: 1px solid #2F4F4D;
-  padding: 16px 8px;
+  padding: 2px 8px;
   font-size: 14px;
   cursor: pointer;
 }
@@ -342,7 +342,7 @@ b {
 }
 
 #search {
-  width: 250px;
+  width: 245px;
 }
 
 #search-btn {
@@ -359,7 +359,7 @@ b {
   background-color: #FFF;
   color: #333;
   border: 1px solid #507A77;
-  padding: 16px 8px;
+  padding: 0px 8px;
   font-size: 14px;
   width: 150px;
   cursor: pointer;
