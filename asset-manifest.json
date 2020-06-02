@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/react-portfolio/static/css/main.65db15d5.chunk.css",
+    "main.css": "/react-portfolio/static/css/main.c158ad29.chunk.css",
     "main.js": "/react-portfolio/static/js/main.4573024d.chunk.js",
     "main.js.map": "/react-portfolio/static/js/main.4573024d.chunk.js.map",
     "runtime-main.js": "/react-portfolio/static/js/runtime-main.a49ad94d.js",
@@ -8,9 +8,9 @@
     "static/js/2.50f4baa3.chunk.js": "/react-portfolio/static/js/2.50f4baa3.chunk.js",
     "static/js/2.50f4baa3.chunk.js.map": "/react-portfolio/static/js/2.50f4baa3.chunk.js.map",
     "index.html": "/react-portfolio/index.html",
-    "precache-manifest.ae842ec575b885081cbade97a5c3f24f.js": "/react-portfolio/precache-manifest.ae842ec575b885081cbade97a5c3f24f.js",
+    "precache-manifest.a58ea49ea3d4a2feb70c4bc0c285a35f.js": "/react-portfolio/precache-manifest.a58ea49ea3d4a2feb70c4bc0c285a35f.js",
     "service-worker.js": "/react-portfolio/service-worker.js",
-    "static/css/main.65db15d5.chunk.css.map": "/react-portfolio/static/css/main.65db15d5.chunk.css.map",
+    "static/css/main.c158ad29.chunk.css.map": "/react-portfolio/static/css/main.c158ad29.chunk.css.map",
     "static/js/2.50f4baa3.chunk.js.LICENSE.txt": "/react-portfolio/static/js/2.50f4baa3.chunk.js.LICENSE.txt",
     "static/media/bank.png": "/react-portfolio/static/media/bank.c5203553.png",
     "static/media/golden_gate.jpg": "/react-portfolio/static/media/golden_gate.662a121d.jpg",
@@ -29,7 +29,7 @@
   "entrypoints": [
     "static/js/runtime-main.a49ad94d.js",
     "static/js/2.50f4baa3.chunk.js",
-    "static/css/main.65db15d5.chunk.css",
+    "static/css/main.c158ad29.chunk.css",
     "static/js/main.4573024d.chunk.js"
   ]
 }
