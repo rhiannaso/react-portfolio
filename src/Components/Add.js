@@ -13,6 +13,7 @@ export class Add extends Component {
       director: '',
       imdb: '',
       plot: '',
+      actors: '',
       //movies: [],
       //shouldUpdate: false,
     }
@@ -38,12 +39,14 @@ export class Add extends Component {
   }
 
   updateDb(obj) {
+    console.log(obj.state.actors);
     let formObj = {
       name: obj.state.title,
       src: obj.state.src,
       director: obj.state.director,
       imdb: obj.state.imdb,
       plot: obj.state.plot,
+      actors: obj.state.actors,
     };
     let ref = firebase.database().ref('movies');
     ref.once('value').then(function(snapshot) {
@@ -67,6 +70,7 @@ export class Add extends Component {
         director: response.data.Director,
         imdb: response.data.imdbRating,
         plot: response.data.Plot,
+        actors: response.data.Actors,
       });
       //console.log(response.data);
     })
