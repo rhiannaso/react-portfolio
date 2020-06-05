@@ -26,12 +26,16 @@ export class Graph extends Component {
       }
       d.fx = d.x;
       d.fy = d.y;
+      tooltip.style('visibility', 'visible');
     }
 
     function dragged(d) {
       d.fx = d3.event.x;
       d.fy = d3.event.y;
-      //tooltip.style('top', (d.fy+20)+'px').style('left',(d.fx-20)+'px');
+      // console.log('dragged x: '+d.fx);
+      // console.log('dragged y: '+d.fy);
+      // console.log(d);
+      tooltip.style('top', (d.fy+150)+'px').style('left',(d.fx+30)+'px');
     }
 
     function dragEnded(d) {
@@ -40,6 +44,7 @@ export class Graph extends Component {
       }
       d.fx = null;
       d.fy = null;
+      tooltip.style('visibility', 'hidden');
     }
 
     return d3.drag()
@@ -49,8 +54,8 @@ export class Graph extends Component {
   }
 
   chart(nodes, links) {
-    const width = 1920;
-    const height = 780;
+    const width = window.innerWidth;
+    const height = window.innerHeight-160;
 
     const obj_links = links.map(d => Object.create(d));
     const obj_nodes = nodes.map(d => Object.create(d));
@@ -67,9 +72,9 @@ export class Graph extends Component {
 
     const radius = (node) => {
       if(node.type === 'actor') {
-        return 50;
+        return 25;
       } 
-      return 100;
+      return 75;
     }
 
     const bg = (node) => {
@@ -103,10 +108,10 @@ export class Graph extends Component {
       .attr('height', 1)
       .append('image')
       .attr('xlink:href', bg)
-      .attr('x', -45)
-      .attr('y', -45)
-      .attr('width', 290)
-      .attr('height', 290);
+      .attr('x', -35)
+      .attr('y', -35)
+      .attr('width', 220)
+      .attr('height', 220);
 
     const node = svg.append('g')
       .attr('stroke', '#000')
@@ -131,18 +136,19 @@ export class Graph extends Component {
           /*let x = node.x + 70;
           let y = node.y + 35;
           tooltip
-            .text(function() {
-                return node.name;
-            })
+            .text(node.name)
             .style('transform', `translate(${x}px, ${y}px)`)
             .style('visibility', 'visible')*/
           tooltip.text(node.name);
           tooltip.style('visibility', 'visible');
+          // console.log(d3.event);
+          // console.log('event x: '+d3.event.x);
+          // console.log('event y: '+d3.event.y);
           tooltip.style('top', (d3.event.y-20)+'px').style('left',(d3.event.x+20)+'px');
         }
       })
 	    .on('mousemove', function(){
-        tooltip.style('top', (d3.event.y-20)+'px').style('left',(d3.event.x+20)+'px');
+        //tooltip.style('top', (d3.event.y-20)+'px').style('left',(d3.event.x+20)+'px');
       })
 	    .on('mouseout', function(){
         return tooltip.style('visibility', 'hidden');
