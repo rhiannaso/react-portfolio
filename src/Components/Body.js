@@ -7,6 +7,7 @@ import Form from './Form';
 import Movies from './Movies';
 import Add from './Add';
 import List from './List';
+import Graph from './Graph';
 
 export class Body extends Component {
   constructor()
@@ -56,8 +57,10 @@ export class Body extends Component {
       return <Movies display={this.state.display} scrollToTop={this.scrollToTop}/>
     else if(activeTab === 7)
       return <Add display={this.state.display} scrollToTop={this.scrollToTop}/>
-    else
+    else if(activeTab === 8)
       return <List display={this.state.display} scrollToTop={this.scrollToTop}/>
+    else
+      return <Graph display={this.state.display} scrollToTop={this.scrollToTop}/>
   }
   render() {
     return(
