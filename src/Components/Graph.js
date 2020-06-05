@@ -19,7 +19,7 @@ export class Graph extends Component {
     }
   }
 
-  drag = (simulation, tooltip) => {
+  drag = (simulation, tooltip, headerHt, navHt) => {
     function dragStarted(d) {
       if(!d3.event.active) {
         simulation.alphaTarget(0.3).restart();
@@ -35,7 +35,7 @@ export class Graph extends Component {
       // console.log('dragged x: '+d.fx);
       // console.log('dragged y: '+d.fy);
       // console.log(d);
-      tooltip.style('top', (d.fy+150)+'px').style('left',(d.fx+30)+'px');
+      tooltip.style('top', (d.fy+headerHt+navHt-20)+'px').style('left',(d.fx+30)+'px');
     }
 
     function dragEnded(d) {
@@ -54,8 +54,10 @@ export class Graph extends Component {
   }
 
   chart(nodes, links) {
+    const headerHt = document.getElementsByClassName('header')[0].offsetHeight;
+    const navHt = document.getElementsByClassName('nav-bar')[0].offsetHeight;
     const width = window.innerWidth;
-    const height = window.innerHeight-160;
+    const height = window.innerHeight-headerHt-navHt;
 
     const obj_links = links.map(d => Object.create(d));
     const obj_nodes = nodes.map(d => Object.create(d));
@@ -147,13 +149,10 @@ export class Graph extends Component {
           tooltip.style('top', (d3.event.y-20)+'px').style('left',(d3.event.x+20)+'px');
         }
       })
-	    .on('mousemove', function(){
-        //tooltip.style('top', (d3.event.y-20)+'px').style('left',(d3.event.x+20)+'px');
-      })
 	    .on('mouseout', function(){
         return tooltip.style('visibility', 'hidden');
       })
-      .call(this.drag(simulation, tooltip));
+      .call(this.drag(simulation, tooltip, headerHt, navHt));
 
     simulation.on('tick', () => {
       link.attr('x1', d => d.source.x)
@@ -237,6 +236,12 @@ export class Graph extends Component {
       const elem = document.getElementById('svg');
       elem.appendChild(this.chart(data.nodes, data.links));
     });
+  }
+
+  componentWillUnmount() {
+    d3.selectAll('svg > *').remove();
+    const elem = document.getElementById('svg');
+    elem.removeChild(elem.childNodes[0]);
   }
 
   render() {
