@@ -26,19 +26,12 @@ export class Graph extends Component {
       }
       d.fx = d.x;
       d.fy = d.y;
-      tooltip.style('top', (d.fy+50)+'px').style('left',(d.fx-50)+'px');
     }
 
     function dragged(d) {
       d.fx = d3.event.x;
       d.fy = d3.event.y;
-      console.log(this);
-      console.log(d);
-      // console.log(d.fx);
-      // console.log(d.x);
-      // console.log(d.fy);
-      // console.log(d.y);
-      tooltip.style('top', (d.fy+20)+'px').style('left',(d.fx-20)+'px');
+      //tooltip.style('top', (d.fy+20)+'px').style('left',(d.fx-20)+'px');
     }
 
     function dragEnded(d) {
@@ -93,7 +86,6 @@ export class Graph extends Component {
 
     let tooltip = d3.select('body')
       .append('div')
-      .attr('id', 'tooltip')
       .style('position', 'absolute')
       .style('z-index', '10')
       .style('visibility', 'hidden')
@@ -123,21 +115,34 @@ export class Graph extends Component {
       .data(obj_nodes)
       .join('circle')
       .attr('r', radius)
+      .attr('cursor', 'pointer')
       .style('fill', function(d) { 
         if(d.type === 'movie') {
           return ("url(#id-"+d.id+")");
         }
-        return d3.color('steelblue');
+        return d3.color('gray');
       })
-      .on('mouseover', function(node){
+
+    /*let tooltip = svg.append('text')
+      .style('font-size', '24px');*/
+
+    node.on('mouseover', function(node){
         if(node.type === 'actor') {
+          /*let x = node.x + 70;
+          let y = node.y + 35;
+          tooltip
+            .text(function() {
+                return node.name;
+            })
+            .style('transform', `translate(${x}px, ${y}px)`)
+            .style('visibility', 'visible')*/
           tooltip.text(node.name);
           tooltip.style('visibility', 'visible');
+          tooltip.style('top', (d3.event.y-20)+'px').style('left',(d3.event.x+20)+'px');
         }
       })
 	    .on('mousemove', function(){
-        return tooltip.style('top', (d3.event.y-20)+'px').style('left',(d3.event.x+20)+'px');
-        //return tooltip.style('top', (d3.event.y-20)+'px').style('left',(d3.event.x+20)+'px');
+        tooltip.style('top', (d3.event.y-20)+'px').style('left',(d3.event.x+20)+'px');
       })
 	    .on('mouseout', function(){
         return tooltip.style('visibility', 'hidden');
