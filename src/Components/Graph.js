@@ -26,7 +26,7 @@ export class Graph extends Component {
       }
       d.fx = d.x;
       d.fy = d.y;
-      tooltip.style('visibility', 'visible');
+      //tooltip.style('visibility', 'visible');
     }
 
     function dragged(d) {
@@ -44,7 +44,7 @@ export class Graph extends Component {
       }
       d.fx = null;
       d.fy = null;
-      tooltip.style('visibility', 'hidden');
+      //tooltip.style('visibility', 'hidden');
     }
 
     return d3.drag()
