@@ -26,15 +26,11 @@ export class Graph extends Component {
       }
       d.fx = d.x;
       d.fy = d.y;
-      //tooltip.style('visibility', 'visible');
     }
 
     function dragged(d) {
       d.fx = d3.event.x;
       d.fy = d3.event.y;
-      // console.log('dragged x: '+d.fx);
-      // console.log('dragged y: '+d.fy);
-      // console.log(d);
       tooltip.style('top', (d.fy+headerHt+navHt-20)+'px').style('left',(d.fx+30)+'px');
     }
 
@@ -44,7 +40,6 @@ export class Graph extends Component {
       }
       d.fx = null;
       d.fy = null;
-      //tooltip.style('visibility', 'hidden');
     }
 
     return d3.drag()
@@ -87,7 +82,7 @@ export class Graph extends Component {
     }
 
     const simulation = d3.forceSimulation(obj_nodes)
-      .force('link', d3.forceLink().links(links).id(d => { return d.name; }).distance(200))
+      .force('link', d3.forceLink().links(obj_links).id(d => { return d.name; }).distance(200))
       .force('charge', d3.forceManyBody())
       .force('center', d3.forceCenter(width/2, height/2));
 
@@ -130,22 +125,10 @@ export class Graph extends Component {
         return d3.color('gray');
       })
 
-    /*let tooltip = svg.append('text')
-      .style('font-size', '24px');*/
-
     node.on('mouseover', function(node){
         if(node.type === 'actor') {
-          /*let x = node.x + 70;
-          let y = node.y + 35;
-          tooltip
-            .text(node.name)
-            .style('transform', `translate(${x}px, ${y}px)`)
-            .style('visibility', 'visible')*/
           tooltip.text(node.name);
           tooltip.style('visibility', 'visible');
-          // console.log(d3.event);
-          // console.log('event x: '+d3.event.x);
-          // console.log('event y: '+d3.event.y);
           tooltip.style('top', (d3.event.y-20)+'px').style('left',(d3.event.x+20)+'px');
         }
       })
@@ -239,9 +222,10 @@ export class Graph extends Component {
   }
 
   componentWillUnmount() {
-    d3.selectAll('svg > *').remove();
-    const elem = document.getElementById('svg');
-    elem.removeChild(elem.childNodes[0]);
+    data.nodes = [];
+    data.links = [];
+    encounteredActors = [];
+    actorPos = [];
   }
 
   render() {
